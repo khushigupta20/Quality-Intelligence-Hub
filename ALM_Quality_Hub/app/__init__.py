@@ -1,0 +1,1 @@
+# Quality Intelligence Hub package

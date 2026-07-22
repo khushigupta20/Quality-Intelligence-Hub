@@ -1,0 +1,106 @@
+# Simple Flight Booking Requirement
+
+## Purpose
+
+The system should allow users to search for and book flights easily.
+
+## Functional Requirements
+
+1. Users can search for flights by:
+
+   * Departure airport
+   * Destination airport
+   * Departure date
+   * Return date (optional)
+   * Number of passengers
+
+2. The system displays available flights with:
+
+   * Airline
+   * Departure and arrival times
+   * Flight duration
+   * Ticket price
+
+3. Users can select a flight and enter passenger information:
+
+   * Full name
+   * Date of birth
+   * Contact email
+   * Phone number
+
+4. Users can review their booking before confirming.
+
+5. The system confirms the booking and provides a booking reference number.
+
+## Non-Functional Requirements
+
+* The system should be easy to use.
+* Search results should be displayed within a few seconds.
+* User information should be stored securely.
+
+
+
+
+
+
+Danish
+# Simpelt krav til flybooking
+
+## Formål
+
+Systemet skal gøre det muligt for brugere nemt at søge efter og booke flyrejser.
+
+## Funktionelle krav
+
+1. Brugeren skal kunne søge efter fly ved at angive:
+
+   * Afgangslufthavn
+   * Destinationslufthavn
+   * Afgangsdato
+   * Returdato (valgfrit)
+   * Antal passagerer
+
+2. Systemet skal vise tilgængelige fly med:
+
+   * Flyselskab
+   * Afgangs- og ankomsttid
+   * Flyvetid
+   * Billetpris
+
+3. Brugeren skal kunne vælge en flyrejse og indtaste passageroplysninger:
+
+   * Fulde navn
+   * Fødselsdato
+   * E-mailadresse
+   * Telefonnummer
+
+4. Brugeren skal kunne gennemgå bookingen, før den bekræftes.
+
+5. Systemet skal bekræfte bookingen og vise et bookingreferencenummer.
+
+## Ikke-funktionelle krav
+
+* Systemet skal være nemt at bruge.
+* Søgeresultater skal vises inden for få sekunder.
+* Brugeroplysninger skal opbevares sikkert.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

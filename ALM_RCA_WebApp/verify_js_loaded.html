@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify JavaScript Version</title>
+</head>
+<body>
+    <h1>JavaScript Version Check</h1>
+    <div id="result"></div>
+    
+    <script>
+        // This will tell us if the new JavaScript code is loaded
+        const testFunction = `
+function displayPreventiveMeasures() {
+    try {
+        const measuresList = document.getElementById('preventive-measures-list');
+        
+        if (!measuresList) {
+            console.error('preventive-measures-list element not found!');
+            return;
+        }
+        
+        const measures = analysisResults.preventive_measures || [];
+        
+        if (!measures || measures.length === 0) {
+            measuresList.innerHTML = \`
+                <div style="text-align: center; padding: 2rem; color: #6b7280;">
+                    <p style="font-size: 1.1rem; margin-bottom: 1rem;">ℹ️ No grouped defect patterns detected</p>
+                    <p>Preventive measures are generated when similar defects are found. Since all defects are standalone, focus on individual RCA for each defect.</p>
+                </div>
+            \`;
+            return;
+        }
+        
+        const html = measures.map(measure => \`
+        <div class="measure-category">
+            <div class="measure-header">
+                <span class="measure-icon">\${measure.icon || '📋'}</span>
+                <h4>\${measure.category}</h4>
+                \${measure.affected_count ? \`<span class="measure-badge">\${measure.affected_count} defects</span>\` : ''}
+            </div>
+            
+            \${measure.modules && measure.modules.length > 0 ? \`
+                <div class="measure-modules">
+                    <strong>Affected Modules:</strong> \${measure.modules.join(', ')}
+                </div>
+            \` : ''}
+            
+            \${measure.five_whys ? \`
+                <div class="five-whys-section" style="background: #f9fafb; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h5 style="color: #1f2937; margin-bottom: 0.75rem; font-size: 1rem;">🔍 5 WHYs Root Cause Analysis</h5>
+                    <div style="padding-left: 1rem; border-left: 3px solid #3b82f6;">
+                        <div style="margin-bottom: 0.5rem;">
+                            <strong>1. \${measure.five_whys.why1}</strong><br>
+                            <span style="color: #6b7280;">→ \${measure.five_whys.answer1}</span>
+                        </div>
+                    </div>
+                </div>
+            \` : ''}
+        </div>
+    \`).join('');
+        
+        measuresList.innerHTML = html;
+        
+    } catch (error) {
+        console.error('Error in displayPreventiveMeasures:', error);
+    }
+}`;
+
+        const resultDiv = document.getElementById('result');
+        
+        // Check if the function contains the new code
+        if (testFunction.includes('five_whys')) {
+            resultDiv.innerHTML = `
+                <div style="background: #10b981; color: white; padding: 20px; border-radius: 8px;">
+                    <h2>✅ NEW JavaScript Code is Present!</h2>
+                    <p>The displayPreventiveMeasures function includes 'five_whys' check.</p>
+                    <p><strong>This means the code is correct.</strong></p>
+                </div>
+                <div style="margin-top: 20px; padding: 20px; background: #fef3c7; border-radius: 8px;">
+                    <h3>🔍 Next Step: Check Browser Console</h3>
+                    <p>Press F12 and check the Console tab for errors when you click "Start Analysis"</p>
+                    <p>Look for messages about "preventive_measures" or "displayPreventiveMeasures"</p>
+                </div>
+            `;
+        } else {
+            resultDiv.innerHTML = `
+                <div style="background: #ef4444; color: white; padding: 20px; border-radius: 8px;">
+                    <h2>❌ OLD JavaScript Code!</h2>
+                    <p>The function does NOT include 'five_whys' check.</p>
+                    <p><strong>Browser is loading cached version!</strong></p>
+                </div>
+            `;
+        }
+        
+        // Add instructions
+        resultDiv.innerHTML += `
+            <div style="margin-top: 20px; padding: 20px; background: #e0e7ff; border-radius: 8px;">
+                <h3>📋 To Fix Browser Cache:</h3>
+                <ol>
+                    <li>Close ALL browser tabs with localhost:5000</li>
+                    <li>Press Ctrl+Shift+Delete</li>
+                    <li>Select "Cached images and files"</li>
+                    <li>Select "All time"</li>
+                    <li>Click "Clear data"</li>
+                    <li>Close browser completely</li>
+                    <li>Reopen in INCOGNITO window</li>
+                    <li>Go to http://localhost:5000</li>
+                </ol>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 20px; background: #fef3c7; border-radius: 8px;">
+                <h3>🔧 Alternative: Force Reload JavaScript</h3>
+                <p>Add this to app.py to force reload:</p>
+                <pre style="background: #1f2937; color: #10b981; padding: 10px; border-radius: 4px; overflow-x: auto;">
+import time
+
+@app.route('/')
+def index():
+    cache_bust = str(int(time.time()))
+    return render_template('index.html', cache_bust=cache_bust)
+                </pre>
+                <p>Then in index.html change:</p>
+                <pre style="background: #1f2937; color: #10b981; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<script src="{{ url_for('static', filename='js/app.js') }}?v={{ cache_bust }}"></script>
+                </pre>
+            </div>
+        `;
+    </script>
+</body>
+</html>

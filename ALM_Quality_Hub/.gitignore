@@ -1,0 +1,48 @@
+﻿# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Environment / secrets ─────────────────────────────────────────────────────
+.env
+# config.json holds live credentials — never commit with real values
+# Uncomment the next line to fully exclude it (users must create their own):
+# config.json
+
+# ── Runtime-generated output ──────────────────────────────────────────────────
+# Analysis JSON results and PDF reports produced by the app
+output/*.json
+output/*.pdf
+output/*.md
+output/*.html
+
+# ── Uploaded defect files (user data, not source code) ───────────────────────
+app/static/uploads/*.csv
+app/static/uploads/*.xlsx
+app/static/uploads/*.xls
+
+# ── OS / editor noise ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# ── Pytest / coverage ─────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/

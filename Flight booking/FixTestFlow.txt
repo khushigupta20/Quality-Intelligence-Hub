@@ -1,0 +1,9 @@
+What does each agent do? Answer: This is a system that translates requirements into English when needed, analyzes software requirements, reviews test cases, identifies missing scenarios, detects ambiguous coverage, uncovers edge cases, and validates consistency between requirements and test cases.
+
+Which pattern fits your use case? (sequential, parallel, router, or feedback loop) Answer: Router
+
+What kind of app? (web UI, API service, CLI, automation script) Answer: Web UI
+
+Your agent endpoint URLs and auth method: Endpoint URL https://servicesessentials.ibm.com/agenticapps/a2a/91a9025b-2dca-4849-9443-91b6f0d228b5/agents/888d13a3-78f1-4e4b-b22e-042419acd124
+
+Authentication: All requests require a valid API key. API key is ak_bFqQhXRCtY3ZRwCWccicORanJT5GY9GOMCMxY-3xpi4

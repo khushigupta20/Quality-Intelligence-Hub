@@ -1,0 +1,11 @@
+Requirement ID: HR-001
+Title: Hotel Room Booking
+
+Requirement:
+The hotel booking app shall allow a registered user to book an available hotel room by selecting:
+
+Check-in date
+Check-out date
+Number of guests
+
+When the selected room is available and the user confirms the booking, the system shall create the booking and display a booking confirmation with a unique booking ID.

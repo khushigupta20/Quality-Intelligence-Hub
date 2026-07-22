@@ -1,0 +1,132 @@
+{
+  "generated_at": "2026-06-23T18:56:51.060361",
+  "total_defects": 5,
+  "summary": {
+    "open": 5,
+    "closed": 0,
+    "high_severity": 4
+  },
+  "severity_distribution": {
+    "High": 3,
+    "Critical": 1,
+    "Medium": 1
+  },
+  "status_distribution": {
+    "Open": 5
+  },
+  "module_distribution": {
+    "Login": 2,
+    "Auth": 2,
+    "Session": 1
+  },
+  "defect_types": {},
+  "root_causes": {},
+  "monthly_trend": {},
+  "high_risk_areas": {
+    "Login": 2,
+    "Auth": 2
+  },
+  "rca_candidates": [
+    {
+      "id": "DEF-001",
+      "summary": "Login button not working",
+      "severity": "High",
+      "module": "Login",
+      "full_summary": "Login button not working",
+      "group_size": 2,
+      "group_key": "Login_login",
+      "similar_defects": [
+        "DEF-002"
+      ],
+      "similar_count": 1
+    },
+    {
+      "id": "DEF-003",
+      "summary": "Password reset email not sent",
+      "severity": "Critical",
+      "module": "Auth",
+      "full_summary": "Password reset email not sent",
+      "group_size": 1,
+      "group_key": "Auth_password",
+      "similar_defects": [],
+      "similar_count": 0
+    },
+    {
+      "id": "DEF-004",
+      "summary": "Authentication token expired",
+      "severity": "High",
+      "module": "Auth",
+      "full_summary": "Authentication token expired",
+      "group_size": 1,
+      "group_key": "Auth_authentication",
+      "similar_defects": [],
+      "similar_count": 0
+    },
+    {
+      "id": "DEF-005",
+      "summary": "Session timeout too short",
+      "severity": "Medium",
+      "module": "Session",
+      "full_summary": "Session timeout too short",
+      "group_size": 1,
+      "group_key": "Session_timeout",
+      "similar_defects": [],
+      "similar_count": 0
+    }
+  ],
+  "total_rca_defects": 5,
+  "grouped_count": 1,
+  "standalone_count": 3,
+  "preventive_measures": [
+    {
+      "category": "General Best Practices",
+      "icon": "\ud83d\udccb",
+      "measures": [
+        "Conduct regular code reviews focusing on identified problem areas",
+        "Implement automated testing for high-defect modules",
+        "Establish coding standards and best practices documentation",
+        "Conduct knowledge sharing sessions on common defect patterns",
+        "Implement continuous integration with automated testing"
+      ]
+    },
+    {
+      "category": "Authentication & Login Issues",
+      "icon": "\ud83d\udee1\ufe0f",
+      "affected_count": 2,
+      "modules": [
+        "Login"
+      ],
+      "five_whys": {
+        "why1": "Why are login issues occurring?",
+        "answer1": "Authentication flow has multiple failure points",
+        "why2": "Why does authentication have multiple failure points?",
+        "answer2": "Insufficient validation and error handling in login process",
+        "why3": "Why is validation insufficient?",
+        "answer3": "Login requirements were not comprehensively defined",
+        "why4": "Why weren't requirements comprehensive?",
+        "answer4": "Edge cases and security scenarios not considered during design",
+        "why5": "Why weren't edge cases considered?",
+        "root_cause": "Lack of comprehensive authentication design review and security testing framework"
+      },
+      "measures": [
+        "Implement comprehensive authentication testing suite",
+        "Add session management validation",
+        "Review password reset and recovery flows",
+        "Implement multi-factor authentication testing",
+        "Add automated login flow regression tests"
+      ],
+      "immediate_actions": [
+        "Implement comprehensive authentication testing suite",
+        "Add session management validation",
+        "Review password reset and recovery flows"
+      ],
+      "long_term_prevention": [
+        "Establish comprehensive testing framework",
+        "Implement continuous monitoring and alerting",
+        "Conduct regular code reviews and audits",
+        "Provide team training on best practices",
+        "Document lessons learned and update standards"
+      ]
+    }
+  ]
+}

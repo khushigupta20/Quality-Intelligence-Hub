@@ -1,0 +1,17 @@
+{
+  "ica_endpoint": "",
+  "ica_api_key": "",
+  "watsonx_api_key": "",
+  "watsonx_project_id": "",
+  "watsonx_model_id": "",
+  "users": {
+    "admin": {
+      "password_hash": "pbkdf2:sha256:600000$zWOBMdgHc3aSYgQO$b529c72614a76c1c9bfac1875a14b3174ab4d58b18611dff73871cc3527452fb",
+      "role": "admin"
+    },
+    "tester": {
+      "password_hash": "pbkdf2:sha256:600000$GQfQVw4XPpSNCTWJ$b3a173451ab2d92efae677fb441b48ffe54503bb6431daf0c80428ed2197c4df",
+      "role": "user"
+    }
+  }
+}

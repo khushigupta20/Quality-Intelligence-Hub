@@ -1,0 +1,22 @@
+| **Scenario ID** | **Test Scenario**                                                                           | **Expected Outcome**                                               
+| --------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------
+| TS_001          | Verify user can search for a one-way flight with valid details                              | Matching flights are displayed                                     |
+| TS_002          | Verify user can search for a round-trip flight                                              | Available outbound and return flights are displayed                |
+| TS_003          | Verify search with mandatory fields only                                                    | Search executes successfully                                       |
+| TS_004          | Verify search without entering mandatory fields                                             | Validation message is displayed                                    |
+| TS_005          | Verify search with an invalid departure or destination airport                              | Appropriate error message is displayed                             |
+| TS_006          | Verify departure and destination airports cannot be the same                                | User is prevented from searching and receives a validation message |
+| TS_007          | Verify departure date cannot be in the past                                                 | Validation message is displayed                                    |
+| TS_008          | Verify return date cannot be earlier than departure date                                    | Validation message is displayed                                    |
+| TS_009          | Verify available flights display airline, departure time, arrival time, duration, and price | All required flight details are displayed correctly                |
+| TS_010          | Verify user can select a flight from the search results                                     | Selected flight is added to the booking                            |
+| TS_011          | Verify user can enter valid passenger details                                               | Passenger details are accepted                                     |
+| TS_012          | Verify mandatory passenger details are validated                                            | Validation messages are shown for missing fields                   |
+| TS_013          | Verify email address validation                                                             | Invalid email formats are rejected                                 |
+| TS_014          | Verify phone number validation                                                              | Invalid phone numbers are rejected                                 |
+| TS_015          | Verify booking review page displays correct flight and passenger information                | All entered details are displayed accurately                       |
+| TS_016          | Verify successful booking confirmation                                                      | Booking is confirmed and a booking reference is generated          |
+| TS_017          | Verify booking reference number is unique                                                   | A unique reference number is assigned for each booking             |
+| TS_018          | Verify behavior when no flights are available                                               | User is informed that no flights are available                     |
+| TS_019          | Verify system performance during flight search                                              | Search results are displayed within the expected response time     |
+| TS_020          | Verify user data is stored securely after booking                                           | Passenger information is saved securely without data loss          |

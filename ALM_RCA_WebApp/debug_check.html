@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Check</title>
+</head>
+<body>
+    <h1>Debug: Check if JavaScript is Updated</h1>
+    <div id="test-output"></div>
+    
+    <script>
+        // Simulate the preventive measures data
+        const testData = {
+            preventive_measures: [
+                {
+                    category: "Test Category",
+                    icon: "🛡️",
+                    affected_count: 5,
+                    modules: ["Module1", "Module2"],
+                    five_whys: {
+                        why1: "Why is this happening?",
+                        answer1: "Because of reason 1",
+                        why2: "Why reason 1?",
+                        answer2: "Because of reason 2",
+                        why3: "Why reason 2?",
+                        answer3: "Because of reason 3",
+                        why4: "Why reason 3?",
+                        answer4: "Because of reason 4",
+                        why5: "Why reason 4?",
+                        root_cause: "This is the root cause"
+                    },
+                    immediate_actions: [
+                        "Action 1",
+                        "Action 2",
+                        "Action 3"
+                    ],
+                    long_term_prevention: [
+                        "Prevention 1",
+                        "Prevention 2",
+                        "Prevention 3"
+                    ],
+                    measures: [
+                        "Measure 1",
+                        "Measure 2"
+                    ]
+                }
+            ]
+        };
+        
+        // Test the display function
+        const output = document.getElementById('test-output');
+        const measures = testData.preventive_measures;
+        
+        if (measures && measures.length > 0) {
+            const measure = measures[0];
+            
+            let html = '<div style="border: 1px solid #ccc; padding: 20px; margin: 20px;">';
+            html += '<h2>' + measure.category + '</h2>';
+            
+            if (measure.five_whys) {
+                html += '<div style="background: #f0f0f0; padding: 15px; margin: 10px 0;">';
+                html += '<h3>🔍 5 WHYs Analysis</h3>';
+                html += '<p><strong>1. ' + measure.five_whys.why1 + '</strong><br>';
+                html += '→ ' + measure.five_whys.answer1 + '</p>';
+                html += '<p><strong>ROOT CAUSE:</strong> ' + measure.five_whys.root_cause + '</p>';
+                html += '</div>';
+            } else {
+                html += '<p style="color: red;">❌ NO 5 WHYS DATA</p>';
+            }
+            
+            if (measure.immediate_actions) {
+                html += '<div style="margin: 10px 0;">';
+                html += '<h4>⚡ Immediate Actions</h4>';
+                html += '<ul>';
+                measure.immediate_actions.forEach(action => {
+                    html += '<li>' + action + '</li>';
+                });
+                html += '</ul>';
+                html += '</div>';
+            } else {
+                html += '<p style="color: red;">❌ NO IMMEDIATE ACTIONS</p>';
+            }
+            
+            html += '</div>';
+            output.innerHTML = html;
+            
+            console.log('✅ Test data structure is correct');
+            console.log('Measure object:', measure);
+        } else {
+            output.innerHTML = '<p style="color: red;">❌ NO MEASURES DATA</p>';
+        }
+    </script>
+</body>
+</html>

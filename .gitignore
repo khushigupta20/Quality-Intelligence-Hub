@@ -1,0 +1,52 @@
+﻿# ── Python bytecode ───────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.eggs/
+*.egg-info/
+dist/
+build/
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Environment / secrets ─────────────────────────────────────────────────────
+.env
+
+# ── ALM_Quality_Hub — runtime-generated files ────────────────────────────────
+ALM_Quality_Hub/output/*.json
+ALM_Quality_Hub/output/*.pdf
+ALM_Quality_Hub/output/*.md
+ALM_Quality_Hub/output/*.html
+ALM_Quality_Hub/app/static/uploads/*.csv
+ALM_Quality_Hub/app/static/uploads/*.xlsx
+ALM_Quality_Hub/app/static/uploads/*.xls
+
+# ── ALM_RCA_WebApp — runtime-generated files ─────────────────────────────────
+ALM_RCA_WebApp/output/*.json
+ALM_RCA_WebApp/output/*.pdf
+ALM_RCA_WebApp/output/*.md
+ALM_RCA_WebApp/output/*.html
+ALM_RCA_WebApp/app/static/uploads/*.csv
+ALM_RCA_WebApp/app/static/uploads/*.xlsx
+ALM_RCA_WebApp/app/static/uploads/*.xls
+
+# ── ICA_BOB — Node modules ────────────────────────────────────────────────────
+ICA_BOB/req-analyzer-app/backend/node_modules/
+
+# ── OS / editor noise ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# ── Pytest / coverage ─────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/

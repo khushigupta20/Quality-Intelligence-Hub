@@ -1,0 +1,7 @@
+Id,Summary,Status,Severity,Module
+DEF-001,Login button not working,New,High,Login
+DEF-002,Login timeout after 30 seconds,New,High,Login
+DEF-003,Login page not loading,Closed,Critical,Login
+DEF-004,Password reset email not sent,Inprogress,High,Auth
+DEF-005,Authentication token expired,Closed,High,Auth
+DEF-006,Session timeout too short,Inprogress,Medium,Session

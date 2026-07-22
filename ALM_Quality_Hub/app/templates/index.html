@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quality Intelligence Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ cache_bust }}" />
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ── Sidebar Navigation ─────────────────────────────────────────── -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-app-name">Quality Intelligence Hub</div>
+      <div class="sidebar-tagline">Powered by IBM</div>
+      {% if current_user %}
+      <div class="sidebar-user">
+        <span class="sidebar-user-icon">👤</span>
+        <span class="sidebar-user-name">{{ current_user }}</span>
+        {% if current_role == 'admin' %}<span class="sidebar-user-role">admin</span>{% endif %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="sidebar-nav">
+
+      <!-- Home -->
+      <a class="nav-item active" data-section="home" href="#">
+        <span class="nav-icon">🏠</span> Home
+      </a>
+
+      <!-- Defect RCA group -->
+      <div class="nav-group-label">Defect RCA</div>
+      <a class="nav-item" data-section="rca" href="#">
+        <span class="nav-icon">📤</span> Upload &amp; Analyze
+      </a>
+
+      <!-- Requirements Analysis group -->
+      <div class="nav-group-label">Requirements Analysis</div>
+      <a class="nav-item" data-section="req-translate" href="#">
+        <span class="nav-icon">🌐</span> Translate
+      </a>
+      <a class="nav-item" data-section="req-analyze" href="#">
+        <span class="nav-icon">🔍</span> Analyze
+      </a>
+      <a class="nav-item" data-section="req-edge-cases" href="#">
+        <span class="nav-icon">⚠️</span> Edge Cases
+      </a>
+      <a class="nav-item" data-section="req-review-tests" href="#">
+        <span class="nav-icon">🧪</span> Review Tests
+      </a>
+      <a class="nav-item" data-section="req-validate" href="#">
+        <span class="nav-icon">✅</span> Validate
+      </a>
+
+      <!-- System group -->
+      <div class="nav-group-label">System</div>
+      <a class="nav-item" data-section="settings" href="#">
+        <span class="nav-icon">⚙️</span> Settings
+      </a>
+
+      <!-- Logout -->
+      <div class="nav-group-label">Account</div>
+      <button type="button" class="nav-item nav-logout-btn" onclick="signOut()">
+        <span class="nav-icon">🚪</span> Sign Out
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- ── Main Content ───────────────────────────────────────────────── -->
+  <main class="main-content">
+
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <!-- HOME SECTION                                                    -->
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <section class="page-section active" id="section-home">
+      <div class="home-hero">
+        <h1>Quality Intelligence Hub</h1>
+        <p class="home-subtitle">Your unified AI-powered quality engineering workspace — defect analysis and requirements review in one place.</p>
+      </div>
+
+      <div class="feature-cards">
+        <!-- RCA Card -->
+        <div class="feature-card">
+          <h3>🔬 Defect Root Cause Analysis</h3>
+          <p class="feature-card-desc">Upload your ALM defect files and get instant automated analysis.</p>
+          <ul class="feature-list">
+            <li>Upload CSV or Excel defect exports</li>
+            <li>Severity, status &amp; module distribution charts</li>
+            <li>Automatic defect grouping by keyword patterns</li>
+            <li>RCA candidates with 5-Whys analysis</li>
+            <li>Preventive measures with immediate &amp; long-term actions</li>
+            <li>Download comprehensive PDF report</li>
+          </ul>
+        </div>
+
+        <!-- Requirements Card -->
+        <div class="feature-card">
+          <h3>📋 Requirements Analyzer</h3>
+          <p class="feature-card-desc">Use the IBM ICA Agent to analyze, translate, and validate your requirements.</p>
+          <ul class="feature-list">
+            <li><strong>Translate</strong> — Convert requirements to English from any language</li>
+            <li><strong>Analyze</strong> — Check clarity, completeness &amp; ambiguities</li>
+            <li><strong>Edge Cases</strong> — Identify boundary conditions &amp; negative scenarios</li>
+            <li><strong>Review Tests</strong> — Review test cases against requirements</li>
+            <li><strong>Validate</strong> — Check consistency between requirements &amp; test cases</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Quick Start -->
+      <div class="card quickstart-card">
+        <h3>🚀 Quick Start</h3>
+        <ol class="quickstart-steps">
+          <li><strong>Configure ICA Agent</strong> — Go to <strong>Settings</strong> in the sidebar and enter your IBM ICA endpoint URL and API key to enable Requirements Analysis.</li>
+          <li><strong>Defect RCA</strong> — Click "Upload &amp; Analyze" in the sidebar, drag and drop your defect CSV or Excel file, and click "Start Analysis".</li>
+          <li><strong>Requirements</strong> — Select any Requirements task from the sidebar, paste or upload your requirements text, and click Run.</li>
+          <li><strong>Download</strong> — After Defect RCA, download your PDF report from the Results tab.</li>
+        </ol>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <!-- DEFECT RCA SECTION                                             -->
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <section class="page-section" id="section-rca">
+      <h2 class="section-heading">🔬 Defect Root Cause Analysis</h2>
+
+      <!-- Upload Card -->
+      <div class="card" id="rca-upload-card">
+        <h3>Upload Defect File</h3>
+        <div id="rca-drop-zone" class="drop-zone">
+          <div class="drop-zone-content">
+            <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            <p class="drop-text">Drag &amp; drop your defect file here</p>
+            <p class="drop-text-or">or</p>
+            <button type="button" class="btn btn-primary"
+              onclick="document.getElementById('rca-file-input').click()">Browse Files</button>
+            <input type="file" id="rca-file-input" accept=".csv,.xlsx,.xls" style="display:none;" />
+            <p class="file-info-hint">Supported: CSV, Excel (.xlsx, .xls) · Max 16 MB</p>
+          </div>
+        </div>
+
+        <div id="rca-file-info" class="file-info-box" style="display:none;">
+          <div class="file-details">
+            <svg class="file-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <div>
+              <p class="file-name" id="rca-file-name"></p>
+              <p class="file-size" id="rca-file-size"></p>
+            </div>
+          </div>
+          <button type="button" class="btn btn-danger btn-sm" onclick="clearRCAFile()">Remove</button>
+        </div>
+
+        <button id="rca-analyze-btn" class="btn btn-primary btn-lg" style="display:none;"
+          onclick="startRCAAnalysis()">🚀 Start Analysis</button>
+      </div>
+
+      <!-- Progress Card -->
+      <div class="card" id="rca-progress-card" style="display:none;">
+        <h3>⏳ Analysis in Progress</h3>
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div id="rca-progress-fill" class="progress-fill"></div>
+          </div>
+          <p id="rca-progress-text" class="progress-text">Uploading file…</p>
+        </div>
+        <div class="progress-steps">
+          <div class="step" id="rca-step-upload"><span class="step-icon">📤</span><span class="step-text">Upload</span></div>
+          <div class="step" id="rca-step-analyze"><span class="step-icon">🔍</span><span class="step-text">Analyze</span></div>
+          <div class="step" id="rca-step-report"><span class="step-icon">📊</span><span class="step-text">Generate Report</span></div>
+          <div class="step" id="rca-step-complete"><span class="step-icon">✅</span><span class="step-text">Complete</span></div>
+        </div>
+      </div>
+
+      <!-- Results Card -->
+      <div class="card" id="rca-results-card" style="display:none;">
+        <h3>📊 Analysis Results</h3>
+
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab active" onclick="switchRCATab('overview')">Overview</button>
+          <button class="tab" onclick="switchRCATab('candidates')">RCA Candidates</button>
+          <button class="tab" onclick="switchRCATab('preventive')">Preventive Measures</button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="rca-tab-overview" class="tab-content active">
+          <div class="results-summary">
+            <div class="stat-card"><h3 id="rca-total-defects">0</h3><p>Total Defects</p></div>
+            <div class="stat-card"><h3 id="rca-high-severity">0</h3><p>High Severity</p></div>
+            <div class="stat-card"><h3 id="rca-open-defects">0</h3><p>Open Defects</p></div>
+            <div class="stat-card"><h3 id="rca-needed">0</h3><p>RCA Needed</p></div>
+          </div>
+          <div class="charts-container">
+            <div class="chart-box"><h4>Severity Distribution</h4><canvas id="rca-severity-chart"></canvas></div>
+            <div class="chart-box"><h4>Status Distribution</h4><canvas id="rca-status-chart"></canvas></div>
+          </div>
+          <div class="charts-container">
+            <div class="chart-box chart-box-full">
+              <h4>Defects by Module / Area</h4>
+              <div class="module-chart-wrap">
+                <canvas id="rca-module-chart"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="action-buttons">
+            <button class="btn btn-primary" onclick="rcaDownloadPdf()">📄 Download PDF Report</button>
+            <button class="btn btn-secondary" onclick="resetRCA()">🔄 Analyze Another File</button>
+          </div>
+        </div>
+
+        <!-- RCA Candidates Tab -->
+        <div id="rca-tab-candidates" class="tab-content">
+          <div class="rca-reason">
+            <div class="rca-reason-title">📋 Why These Defects Require RCA</div>
+            <ul class="rca-reason-list">
+              <li><strong>Medium to Critical Severity:</strong> Defects with moderate to significant impact on system functionality</li>
+              <li><strong>No Root Cause Identified:</strong> Defects without documented root cause analysis</li>
+              <li><strong>Pattern Detection:</strong> Grouped defects indicate systemic issues requiring investigation</li>
+              <li><strong>Standalone Defects:</strong> Individual high-impact defects also need RCA to prevent recurrence</li>
+            </ul>
+          </div>
+          <div class="rca-candidates-wrap">
+            <h4>🎯 Defects Requiring RCA (<span id="rca-count">0</span>)</h4>
+            <div id="rca-candidates-list"></div>
+          </div>
+          <div class="action-buttons" style="margin-top:1.5rem;">
+            <button class="btn btn-primary" onclick="rcaDownloadPdf()">📄 Download PDF Report</button>
+          </div>
+        </div>
+
+        <!-- Preventive Measures Tab -->
+        <div id="rca-tab-preventive" class="tab-content">
+          <div class="preventive-intro">
+            <h4>🛡️ Recommended Preventive Measures</h4>
+            <p>Based on the defect pattern analysis, here are actionable measures to prevent similar issues in future sprints.</p>
+          </div>
+          <div id="rca-preventive-list" class="preventive-measures-list"></div>
+          <div class="action-buttons" style="margin-top:1.5rem;">
+            <button class="btn btn-primary" onclick="rcaDownloadPdf()">📄 Download PDF Report</button>
+            <button class="btn btn-secondary" onclick="resetRCA()">🔄 Analyze Another File</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Card -->
+      <div class="card error-card" id="rca-error-card" style="display:none;">
+        <h3>❌ Error</h3>
+        <p id="rca-error-message"></p>
+        <button class="btn btn-secondary" onclick="resetRCA()">Try Again</button>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <!-- REQUIREMENTS — TRANSLATE                                       -->
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <section class="page-section" id="section-req-translate">
+      <h2 class="section-heading">🌐 Translate Requirements</h2>
+      <div class="task-description">
+        Paste requirements written in any language. The agent will translate them into clear, professional English while preserving all technical details.
+      </div>
+      <div class="input-section">
+        <div class="input-field-block">
+          <div class="field-header">
+            <label for="req-translate-requirements">Requirements (any language)</label>
+            <label class="upload-btn" for="req-translate-requirements-file" title="Upload a text file">
+              ↑ Upload File
+              <input id="req-translate-requirements-file" type="file" accept=".txt,.md,.csv,.json,.xml,.yaml,.yml,.text" style="display:none;" onchange="handleReqFileUpload('translate','requirements',this)" />
+            </label>
+          </div>
+          <p class="field-hint">Supports any natural language — French, German, Japanese, Arabic, etc.</p>
+          <textarea id="req-translate-requirements" placeholder="Paste requirements in any language here…" oninput="onReqFieldInput('translate','requirements',this.value)"></textarea>
+          <button class="field-clear-btn" id="req-translate-requirements-clear" style="display:none;" onclick="clearReqField('translate','requirements')" type="button">Clear</button>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" id="req-translate-submit" onclick="submitRequirement('translate')" disabled>Run Translate Requirements</button>
+        </div>
+      </div>
+      <div id="req-translate-response-area">
+        <div class="loading-indicator" id="req-translate-loading" style="display:none;">
+          <div class="spinner"></div>
+          <span>Agent is processing your request… <span class="loading-elapsed" id="req-translate-elapsed"></span></span>
+        </div>
+        <div class="error-box" id="req-translate-error" style="display:none;"></div>
+        <div id="req-translate-response-wrap" style="display:none;">
+          <div class="response-header">
+            <h4>Agent Response</h4>
+            <button class="copy-btn" onclick="copyReqResponse('translate')">Copy</button>
+          </div>
+          <div class="response-box" id="req-translate-response"></div>
+        </div>
+      </div>
+      <div id="req-translate-history"></div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <!-- REQUIREMENTS — ANALYZE                                         -->
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <section class="page-section" id="section-req-analyze">
+      <h2 class="section-heading">🔍 Analyze Requirements</h2>
+      <div class="task-description">
+        Paste your software requirements. The agent will analyze them for clarity, completeness, ambiguities, and missing information.
+      </div>
+      <div class="input-section">
+        <div class="input-field-block">
+          <div class="field-header">
+            <label for="req-analyze-requirements">Software Requirements</label>
+            <label class="upload-btn" for="req-analyze-requirements-file" title="Upload a text file">
+              ↑ Upload File
+              <input id="req-analyze-requirements-file" type="file" accept=".txt,.md,.csv,.json,.xml,.yaml,.yml,.text" style="display:none;" onchange="handleReqFileUpload('analyze','requirements',this)" />
+            </label>
+          </div>
+          <p class="field-hint">User stories, acceptance criteria, or free-form requirement text.</p>
+          <textarea id="req-analyze-requirements" placeholder="Paste your software requirements here…" oninput="onReqFieldInput('analyze','requirements',this.value)"></textarea>
+          <button class="field-clear-btn" id="req-analyze-requirements-clear" style="display:none;" onclick="clearReqField('analyze','requirements')" type="button">Clear</button>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" id="req-analyze-submit" onclick="submitRequirement('analyze')" disabled>Run Analyze Requirements</button>
+        </div>
+      </div>
+      <div id="req-analyze-response-area">
+        <div class="loading-indicator" id="req-analyze-loading" style="display:none;">
+          <div class="spinner"></div>
+          <span>Agent is processing your request… <span class="loading-elapsed" id="req-analyze-elapsed"></span></span>
+        </div>
+        <div class="error-box" id="req-analyze-error" style="display:none;"></div>
+        <div id="req-analyze-response-wrap" style="display:none;">
+          <div class="response-header">
+            <h4>Agent Response</h4>
+            <button class="copy-btn" onclick="copyReqResponse('analyze')">Copy</button>
+          </div>
+          <div class="response-box" id="req-analyze-response"></div>
+        </div>
+      </div>
+      <div id="req-analyze-history"></div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <!-- REQUIREMENTS — EDGE CASES                                      -->
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <section class="page-section" id="section-req-edge-cases">
+      <h2 class="section-heading">⚠️ Identify Edge Cases</h2>
+      <div class="task-description">
+        Paste requirements or a feature description. The agent will systematically identify all edge cases, boundary conditions, and negative scenarios.
+      </div>
+      <div class="input-section">
+        <div class="input-field-block">
+          <div class="field-header">
+            <label for="req-edge_cases-requirements">Requirements / Feature Description</label>
+            <label class="upload-btn" for="req-edge_cases-requirements-file" title="Upload a text file">
+              ↑ Upload File
+              <input id="req-edge_cases-requirements-file" type="file" accept=".txt,.md,.csv,.json,.xml,.yaml,.yml,.text" style="display:none;" onchange="handleReqFileUpload('edge_cases','requirements',this)" />
+            </label>
+          </div>
+          <p class="field-hint">The more detail you provide, the more thorough the edge case analysis.</p>
+          <textarea id="req-edge_cases-requirements" placeholder="Paste requirements or feature description here…" oninput="onReqFieldInput('edge_cases','requirements',this.value)"></textarea>
+          <button class="field-clear-btn" id="req-edge_cases-requirements-clear" style="display:none;" onclick="clearReqField('edge_cases','requirements')" type="button">Clear</button>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" id="req-edge_cases-submit" onclick="submitRequirement('edge_cases')" disabled>Run Identify Edge Cases</button>
+        </div>
+      </div>
+      <div id="req-edge_cases-response-area">
+        <div class="loading-indicator" id="req-edge_cases-loading" style="display:none;">
+          <div class="spinner"></div>
+          <span>Agent is processing your request… <span class="loading-elapsed" id="req-edge_cases-elapsed"></span></span>
+        </div>
+        <div class="error-box" id="req-edge_cases-error" style="display:none;"></div>
+        <div id="req-edge_cases-response-wrap" style="display:none;">
+          <div class="response-header">
+            <h4>Agent Response</h4>
+            <button class="copy-btn" onclick="copyReqResponse('edge_cases')">Copy</button>
+          </div>
+          <div class="response-box" id="req-edge_cases-response"></div>
+        </div>
+      </div>
+      <div id="req-edge_cases-history"></div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <!-- REQUIREMENTS — REVIEW TESTS                                    -->
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <section class="page-section" id="section-req-review-tests">
+      <h2 class="section-heading">🧪 Review Test Scenarios</h2>
+      <div class="task-description">
+        Paste your requirements and test scenarios/cases separately. The agent will identify missing scenarios, redundant tests, and edge cases not covered.
+      </div>
+      <div class="input-section">
+        <!-- Field 1: Requirements -->
+        <div class="input-field-block">
+          <div class="field-header">
+            <label for="req-review_tests-requirements">Requirements</label>
+            <label class="upload-btn" for="req-review_tests-requirements-file" title="Upload a text file">
+              ↑ Upload File
+              <input id="req-review_tests-requirements-file" type="file" accept=".txt,.md,.csv,.json,.xml,.yaml,.yml,.text" style="display:none;" onchange="handleReqFileUpload('review_tests','requirements',this)" />
+            </label>
+          </div>
+          <p class="field-hint">The baseline requirements the test cases should cover.</p>
+          <textarea id="req-review_tests-requirements" placeholder="Paste your software requirements here…" oninput="onReqFieldInput('review_tests','requirements',this.value)"></textarea>
+          <button class="field-clear-btn" id="req-review_tests-requirements-clear" style="display:none;" onclick="clearReqField('review_tests','requirements')" type="button">Clear</button>
+        </div>
+        <!-- Field 2: Test Cases -->
+        <div class="input-field-block">
+          <div class="field-header">
+            <label for="req-review_tests-test_cases">Test Scenarios / Test Cases</label>
+            <label class="upload-btn" for="req-review_tests-test_cases-file" title="Upload a text file">
+              ↑ Upload File
+              <input id="req-review_tests-test_cases-file" type="file" accept=".txt,.md,.csv,.json,.xml,.yaml,.yml,.text" style="display:none;" onchange="handleReqFileUpload('review_tests','test_cases',this)" />
+            </label>
+          </div>
+          <p class="field-hint">List each test case or scenario clearly, one per line or numbered.</p>
+          <textarea id="req-review_tests-test_cases" placeholder="Paste your test scenarios or test cases here…" oninput="onReqFieldInput('review_tests','test_cases',this.value)"></textarea>
+          <button class="field-clear-btn" id="req-review_tests-test_cases-clear" style="display:none;" onclick="clearReqField('review_tests','test_cases')" type="button">Clear</button>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" id="req-review_tests-submit" onclick="submitRequirement('review_tests')" disabled>Run Review Test Scenarios</button>
+        </div>
+      </div>
+      <div id="req-review_tests-response-area">
+        <div class="loading-indicator" id="req-review_tests-loading" style="display:none;">
+          <div class="spinner"></div>
+          <span>Agent is processing your request… <span class="loading-elapsed" id="req-review_tests-elapsed"></span></span>
+        </div>
+        <div class="error-box" id="req-review_tests-error" style="display:none;"></div>
+        <div id="req-review_tests-response-wrap" style="display:none;">
+          <div class="response-header">
+            <h4>Agent Response</h4>
+            <button class="copy-btn" onclick="copyReqResponse('review_tests')">Copy</button>
+          </div>
+          <div class="response-box" id="req-review_tests-response"></div>
+        </div>
+      </div>
+      <div id="req-review_tests-history"></div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <!-- REQUIREMENTS — VALIDATE                                        -->
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <section class="page-section" id="section-req-validate">
+      <h2 class="section-heading">✅ Validate Consistency</h2>
+      <div class="task-description">
+        Paste requirements and test cases separately. The agent will check consistency — finding requirements with no test coverage and test cases that don't map to any requirement.
+      </div>
+      <div class="input-section">
+        <!-- Field 1: Requirements -->
+        <div class="input-field-block">
+          <div class="field-header">
+            <label for="req-validate-requirements">Requirements</label>
+            <label class="upload-btn" for="req-validate-requirements-file" title="Upload a text file">
+              ↑ Upload File
+              <input id="req-validate-requirements-file" type="file" accept=".txt,.md,.csv,.json,.xml,.yaml,.yml,.text" style="display:none;" onchange="handleReqFileUpload('validate','requirements',this)" />
+            </label>
+          </div>
+          <p class="field-hint">The source-of-truth requirements to validate against.</p>
+          <textarea id="req-validate-requirements" placeholder="Paste your software requirements here…" oninput="onReqFieldInput('validate','requirements',this.value)"></textarea>
+          <button class="field-clear-btn" id="req-validate-requirements-clear" style="display:none;" onclick="clearReqField('validate','requirements')" type="button">Clear</button>
+        </div>
+        <!-- Field 2: Test Cases -->
+        <div class="input-field-block">
+          <div class="field-header">
+            <label for="req-validate-test_cases">Test Cases</label>
+            <label class="upload-btn" for="req-validate-test_cases-file" title="Upload a text file">
+              ↑ Upload File
+              <input id="req-validate-test_cases-file" type="file" accept=".txt,.md,.csv,.json,.xml,.yaml,.yml,.text" style="display:none;" onchange="handleReqFileUpload('validate','test_cases',this)" />
+            </label>
+          </div>
+          <p class="field-hint">The test cases to cross-check against the requirements.</p>
+          <textarea id="req-validate-test_cases" placeholder="Paste your test cases here…" oninput="onReqFieldInput('validate','test_cases',this.value)"></textarea>
+          <button class="field-clear-btn" id="req-validate-test_cases-clear" style="display:none;" onclick="clearReqField('validate','test_cases')" type="button">Clear</button>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" id="req-validate-submit" onclick="submitRequirement('validate')" disabled>Run Validate Consistency</button>
+        </div>
+      </div>
+      <div id="req-validate-response-area">
+        <div class="loading-indicator" id="req-validate-loading" style="display:none;">
+          <div class="spinner"></div>
+          <span>Agent is processing your request… <span class="loading-elapsed" id="req-validate-elapsed"></span></span>
+        </div>
+        <div class="error-box" id="req-validate-error" style="display:none;"></div>
+        <div id="req-validate-response-wrap" style="display:none;">
+          <div class="response-header">
+            <h4>Agent Response</h4>
+            <button class="copy-btn" onclick="copyReqResponse('validate')">Copy</button>
+          </div>
+          <div class="response-box" id="req-validate-response"></div>
+        </div>
+      </div>
+      <div id="req-validate-history"></div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <!-- SETTINGS SECTION                                               -->
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <section class="page-section" id="section-settings">
+      <h2 class="section-heading">⚙️ Settings</h2>
+      <p class="settings-desc">Configure the IBM ICA Agent (Requirements Analyzer) and IBM watsonx.ai (Defect RCA AI). Your credentials are stored locally in <code>config.json</code> and never transmitted anywhere other than the respective endpoints.</p>
+
+      <div class="card settings-form">
+
+        <!-- ── ICA Agent ─────────────────────────────────────── -->
+        <div class="settings-section-label">IBM ICA Agent — Requirements Analyzer</div>
+
+        <!-- ICA Endpoint -->
+        <div class="form-group">
+          <label for="settings-endpoint">ICA Agent Endpoint URL</label>
+          <input type="text" id="settings-endpoint"
+            placeholder="https://servicesessentials.ibm.com/agenticapps/a2a/…/agents/…" />
+          <p class="field-hint">The full HTTPS endpoint URL for your IBM ICA agent.</p>
+        </div>
+
+        <!-- ICA API Key -->
+        <div class="form-group">
+          <label for="settings-api-key">ICA API Key</label>
+          <div class="key-input-row">
+            <input type="password" id="settings-api-key" placeholder="ak_…" />
+            <button type="button" class="btn btn-sm btn-secondary" id="settings-key-toggle"
+              onclick="toggleApiKeyVisibility()">Show</button>
+          </div>
+          <p class="field-hint">
+            Your IBM ICA API key. &nbsp;
+            <span id="settings-key-status" class="key-status-not-set">Not configured</span>
+          </p>
+        </div>
+
+        <hr class="settings-divider" />
+
+        <!-- ── IBM watsonx.ai ────────────────────────────────── -->
+        <div class="settings-section-label">IBM watsonx.ai — Defect RCA AI Enhancement</div>
+        <p class="settings-sub-desc">
+          When configured, the Defect RCA section uses IBM watsonx.ai (Granite) for context-aware
+          5-Whys analysis, preventive measures, per-defect root cause suggestions, and PDF
+          executive summaries. Falls back to rule-based output when not set.
+        </p>
+
+        <!-- watsonx API Key -->
+        <div class="form-group">
+          <label for="settings-wx-api-key">watsonx API Key (IBM Cloud IAM)</label>
+          <div class="key-input-row">
+            <input type="password" id="settings-wx-api-key" placeholder="Enter IBM Cloud IAM API key…" />
+            <button type="button" class="btn btn-sm btn-secondary" id="settings-wx-key-toggle"
+              onclick="toggleWatsonxKeyVisibility()">Show</button>
+          </div>
+          <p class="field-hint">
+            Your IBM Cloud IAM API key. &nbsp;
+            <span id="settings-wx-key-status" class="key-status-not-set">Not configured</span>
+          </p>
+        </div>
+
+        <!-- watsonx Project ID -->
+        <div class="form-group">
+          <label for="settings-wx-project-id">watsonx Project ID</label>
+          <div class="key-input-row">
+            <input type="password" id="settings-wx-project-id" placeholder="Enter watsonx.ai project ID…" />
+            <button type="button" class="btn btn-sm btn-secondary" id="settings-wx-project-toggle"
+              onclick="toggleWatsonxProjectVisibility()">Show</button>
+          </div>
+          <p class="field-hint">
+            Your watsonx.ai project ID. &nbsp;
+            <span id="settings-wx-project-status" class="key-status-not-set">Not configured</span>
+          </p>
+        </div>
+
+        <!-- watsonx Model ID -->
+        <div class="form-group">
+          <label for="settings-wx-model">watsonx Model ID</label>
+          <input type="text" id="settings-wx-model"
+            placeholder="ibm/granite-3-8b-instruct" />
+          <p class="field-hint">
+            Leave blank to use the default: <code>ibm/granite-3-8b-instruct</code>.
+          </p>
+        </div>
+
+        <!-- Save Button -->
+        <div class="actions">
+          <button class="btn btn-primary" id="settings-save-btn" onclick="saveSettings()">Save Settings</button>
+        </div>
+
+        <!-- Status Message -->
+        <div id="settings-status" style="display:none;"></div>
+      </div>
+
+      <!-- ── User Management card ──────────────────────────────── -->
+      <div class="card settings-form" id="user-mgmt-card">
+        <div class="settings-section-label">User Management</div>
+        <p class="settings-sub-desc">
+          Add or remove users who can access the Quality Intelligence Hub.
+          Only admins can manage users. Passwords must be at least 6 characters.
+        </p>
+
+        <!-- Current users list -->
+        <div id="users-list-wrap">
+          <h4 style="font-size:0.85rem;margin-bottom:0.75rem;color:var(--cds-gray-100);">Current Users</h4>
+          <div id="users-list"><p style="color:var(--cds-gray-50);font-size:0.875rem;">Loading…</p></div>
+        </div>
+
+        <hr class="settings-divider" />
+
+        <!-- Reset own password (visible to all logged-in users) -->
+        <div id="reset-own-password-section">
+          <h4 style="font-size:0.85rem;margin-bottom:0.4rem;color:var(--cds-gray-100);">🔑 Reset My Password</h4>
+          <p style="font-size:0.8rem;color:var(--cds-gray-70);margin-bottom:0.85rem;">Change the password for your own account.</p>
+          <div class="form-group">
+            <label for="self-new-password">New Password (min 6 characters)</label>
+            <input type="password" id="self-new-password" placeholder="Enter new password" autocomplete="new-password" />
+          </div>
+          <div class="form-group">
+            <label for="self-confirm-password">Confirm New Password</label>
+            <input type="password" id="self-confirm-password" placeholder="Confirm new password" autocomplete="new-password" />
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" onclick="resetOwnPassword()">Update My Password</button>
+          </div>
+        </div>
+
+        <!-- Admin-only section: Add user + Reset any user's password -->
+        <div id="admin-user-section">
+          <hr class="settings-divider" />
+
+          <!-- Add user form (admin only) -->
+          <div id="add-user-section">
+            <h4 style="font-size:0.85rem;margin-bottom:0.75rem;color:var(--cds-gray-100);">➕ Add New User</h4>
+            <div class="form-group">
+              <label for="new-username">Username</label>
+              <input type="text" id="new-username" placeholder="e.g. john.doe" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label for="new-password">Password (min 6 characters)</label>
+              <input type="password" id="new-password" placeholder="Enter password" autocomplete="new-password" />
+            </div>
+            <div class="form-group">
+              <label for="new-role">Role</label>
+              <select id="new-role" style="width:100%;padding:0.6rem 0.9rem;border:1.5px solid var(--cds-gray-20);border-radius:var(--radius);font-family:inherit;font-size:0.9rem;background:var(--cds-white);">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" onclick="addUser()">Add User</button>
+            </div>
+          </div>
+
+          <hr class="settings-divider" />
+
+          <!-- Reset any user's password (admin only) -->
+          <div id="reset-any-password-section">
+            <h4 style="font-size:0.85rem;margin-bottom:0.4rem;color:var(--cds-gray-100);">🔐 Reset Any User's Password</h4>
+            <p style="font-size:0.8rem;color:var(--cds-gray-70);margin-bottom:0.85rem;">As admin, you can reset the password for any user.</p>
+            <div class="form-group">
+              <label for="reset-target-username">Select User</label>
+              <select id="reset-target-username" style="width:100%;padding:0.6rem 0.9rem;border:1.5px solid var(--cds-gray-20);border-radius:var(--radius);font-family:inherit;font-size:0.9rem;background:var(--cds-white);">
+                <option value="">— Select a user —</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="reset-new-password">New Password (min 6 characters)</label>
+              <input type="password" id="reset-new-password" placeholder="Enter new password" autocomplete="new-password" />
+            </div>
+            <div class="form-group">
+              <label for="reset-confirm-password">Confirm New Password</label>
+              <input type="password" id="reset-confirm-password" placeholder="Confirm new password" autocomplete="new-password" />
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" onclick="resetAnyPassword()">Reset Password</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="user-mgmt-status" style="display:none;margin-top:0.75rem;"></div>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}?v={{ cache_bust }}"></script>
+</body>
+</html>

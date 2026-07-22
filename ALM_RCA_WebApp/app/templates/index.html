@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALM RCA Web Application</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ cache_bust }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 ALM Root Cause Analysis</h1>
+            <p class="subtitle">Upload your defect file and get instant RCA analysis</p>
+        </header>
+
+        <main>
+            <!-- Upload Section -->
+            <section id="upload-section" class="card">
+                <h2>📤 Upload Defect File</h2>
+                <div id="drop-zone" class="drop-zone">
+                    <div class="drop-zone-content">
+                        <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <p class="drop-text">Drag & drop your file here</p>
+                        <p class="drop-text-or">or</p>
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('file-input').click()">
+                            Browse Files
+                        </button>
+                        <input type="file" id="file-input" accept=".csv,.xlsx,.xls" style="display: none;">
+                        <p class="file-info">Supported formats: CSV, Excel (.xlsx, .xls)</p>
+                    </div>
+                </div>
+                
+                <div id="file-info" class="file-info-box" style="display: none;">
+                    <div class="file-details">
+                        <svg class="file-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <div>
+                            <p class="file-name" id="file-name"></p>
+                            <p class="file-size" id="file-size"></p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="clearFile()">Remove</button>
+                </div>
+
+                <button id="analyze-btn" class="btn btn-success btn-lg" style="display: none;" onclick="startAnalysis()">
+                    🚀 Start Analysis
+                </button>
+            </section>
+
+            <!-- Progress Section -->
+            <section id="progress-section" class="card" style="display: none;">
+                <h2>⏳ Analysis in Progress</h2>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                    <p id="progress-text" class="progress-text">Uploading file...</p>
+                </div>
+                <div id="progress-steps" class="progress-steps">
+                    <div class="step" id="step-upload">
+                        <span class="step-icon">📤</span>
+                        <span class="step-text">Upload</span>
+                    </div>
+                    <div class="step" id="step-analyze">
+                        <span class="step-icon">🔍</span>
+                        <span class="step-text">Analyze</span>
+                    </div>
+                    <div class="step" id="step-report">
+                        <span class="step-icon">📊</span>
+                        <span class="step-text">Generate Reports</span>
+                    </div>
+                    <div class="step" id="step-complete">
+                        <span class="step-icon">✅</span>
+                        <span class="step-text">Complete</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="results-section" class="card" style="display: none;">
+                <h2>📊 Analysis Results</h2>
+                
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button class="tab active" onclick="switchResultTab('overview')">Overview</button>
+                    <button class="tab" onclick="switchResultTab('rca-candidates')">RCA Candidates</button>
+                    <button class="tab" onclick="switchResultTab('preventive-measures')">Preventive Measures</button>
+                </div>
+
+                <!-- Overview Tab -->
+                <div id="overview-tab" class="tab-content active">
+                    <div class="results-summary">
+                        <div class="stat-card">
+                            <h3 id="total-defects">0</h3>
+                            <p>Total Defects</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="high-severity">0</h3>
+                            <p>High Severity</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="open-defects">0</h3>
+                            <p>Open Defects</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="rca-needed">0</h3>
+                            <p>RCA Needed</p>
+                        </div>
+                    </div>
+
+                    <div class="charts-container">
+                        <div class="chart-box">
+                            <h3>Severity Distribution</h3>
+                            <canvas id="severity-chart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Status Distribution</h3>
+                            <canvas id="status-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="charts-container">
+                        <div class="chart-box" style="grid-column: 1 / -1; max-height: 400px;">
+                            <h3>Defects by Module/Area</h3>
+                            <div style="display: flex; justify-content: center; align-items: center; height: 350px;">
+                                <canvas id="module-chart" style="max-height: 320px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="downloadReport('html')">
+                            📄 Download PDF Report
+                        </button>
+                        <button class="btn btn-primary" onclick="downloadReport('summary')">
+                            📄 Download Summary Report
+                        </button>
+                        <button class="btn btn-primary" onclick="downloadReport('json')">
+                            📊 Download JSON Data
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetApp()">
+                            🔄 Analyze Another File
+                        </button>
+                    </div>
+                </div>
+
+                <!-- RCA Candidates Tab -->
+                <div id="rca-candidates-tab" class="tab-content">
+                    <div class="rca-reason">
+                        <div class="rca-reason-title">📋 Why These Defects Require RCA:</div>
+                        <ul class="rca-reason-list">
+                            <li><strong>Medium to Critical Severity:</strong> Defects with moderate to significant impact on system functionality</li>
+                            <li><strong>No Root Cause Identified:</strong> Defects without documented root cause analysis</li>
+                            <li><strong>Pattern Detection:</strong> Grouped defects indicate systemic issues requiring investigation</li>
+                            <li><strong>Standalone Defects:</strong> Individual high-impact defects also need RCA to prevent recurrence</li>
+                        </ul>
+                    </div>
+
+                    <div class="rca-candidates" id="rca-candidates">
+                        <h3>🎯 Defects Requiring RCA (<span id="rca-count">0</span>)</h3>
+                        <div id="candidates-list"></div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="downloadReport('html')">
+                            📄 Download PDF Report
+                        </button>
+                        <button class="btn btn-primary" onclick="downloadReport('summary')">
+                            📄 Download Summary Report
+                        </button>
+                        <button class="btn btn-primary" onclick="downloadReport('json')">
+                            📊 Download JSON Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preventive Measures Tab -->
+                <div id="preventive-measures-tab" class="tab-content">
+                    <div class="preventive-intro">
+                        <h3>🛡️ Recommended Preventive Measures</h3>
+                        <p>Based on the analysis of defect patterns, here are actionable measures to prevent similar issues in the future:</p>
+                    </div>
+                    
+                    <div id="preventive-measures-list" class="preventive-measures-list">
+                        <!-- Measures will be populated by JavaScript -->
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="downloadReport('html')">
+                            📄 Download PDF Report
+                        </button>
+                        <button class="btn btn-primary" onclick="downloadReport('summary')">
+                            📄 Download Summary Report
+                        </button>
+                        <button class="btn btn-primary" onclick="downloadReport('json')">
+                            📊 Download JSON Data
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetApp()">
+                            🔄 Analyze Another File
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <section id="error-section" class="card error-card" style="display: none;">
+                <h2>❌ Error</h2>
+                <p id="error-message"></p>
+                <button class="btn btn-secondary" onclick="resetApp()">Try Again</button>
+            </section>
+        </main>
+
+        <footer>
+            <p>ALM RCA Web Application | Powered by Flask & Python</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}?v={{ cache_bust }}"></script>
+</body>
+</html>

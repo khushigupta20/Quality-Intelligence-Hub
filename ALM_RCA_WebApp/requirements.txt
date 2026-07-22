@@ -1,0 +1,11 @@
+Flask==3.0.0
+pandas>=2.2.0
+openpyxl==3.1.2
+python-dateutil==2.8.2
+Werkzeug==3.0.1
+reportlab==4.2.5
+python-dotenv>=1.0.0
+
+# Optional: install to enable LLM-powered 5-Whys analysis via IBM watsonx.
+# Set the corresponding environment variables in a .env file (see .env.example).
+# ibm-watsonx-ai>=1.1.2   # needs WATSONX_API_KEY + WATSONX_PROJECT_ID

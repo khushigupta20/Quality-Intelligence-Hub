@@ -1,0 +1,21 @@
+Id,Summary,Status,Severity,Module
+DEF-001,Login button not working,New,High,Login
+DEF-002,Login timeout after 30 seconds,New,High,Login
+DEF-003,Login page not loading,Closed,Critical,Login
+DEF-004,Password reset email not sent,Inprogress,High,Auth
+DEF-005,Authentication token expired,Closed,High,Auth
+DEF-006,Session timeout too short,Inprogress,Medium,Session
+DEF-007,Round-trip fare calculated incorrectly,New,Critical,Booking
+DEF-008,Passenger details lost after payment,Inprogress,Critical,Booking
+DEF-009,Seat selection resets on refresh,New,Medium,Seats
+DEF-010,Promo code applied but discount missing,New,High,Payment
+DEF-011,Payment succeeds but booking fails,New,Critical,Payment
+DEF-012,Boarding pass download unavailable,New,Medium,Check-in
+DEF-013,Incorrect baggage fee displayed,New,Medium,Fare
+DEF-014,Booking confirmation email not received,Closed,High,Notification
+DEF-015,Multi-city itinerary saves wrong dates,New,High,Booking
+DEF-016,Search results not showing available flights,New,High,Search
+DEF-017,Typo in 'Travellers' label on search page,New,Low,Flight Search
+DEF-018,Footer copyright year is outdated,Inprogress,Low,General UI
+DEF-019,Help tooltip overlaps nearby icon on small screens,Closed,Low,UI
+DEF-020,Profile page avatar placeholder not centered,New,Low,User Profile

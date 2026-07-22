@@ -1,0 +1,61 @@
+
+# Simpelt krav til flybooking
+
+## Formål
+
+Systemet skal gøre det muligt for brugere nemt at søge efter og booke flyrejser.
+
+## Funktionelle krav
+
+1. Brugeren skal kunne søge efter fly ved at angive:
+
+   * Afgangslufthavn
+   * Destinationslufthavn
+   * Afgangsdato
+   * Returdato (valgfrit)
+   * Antal passagerer
+
+2. Systemet skal vise tilgængelige fly med:
+
+   * Flyselskab
+   * Afgangs- og ankomsttid
+   * Flyvetid
+   * Billetpris
+
+3. Brugeren skal kunne vælge en flyrejse og indtaste passageroplysninger:
+
+   * Fulde navn
+   * Fødselsdato
+   * E-mailadresse
+   * Telefonnummer
+
+4. Brugeren skal kunne gennemgå bookingen, før den bekræftes.
+
+5. Systemet skal bekræfte bookingen og vise et bookingreferencenummer.
+
+## Ikke-funktionelle krav
+
+* Systemet skal være nemt at bruge.
+* Søgeresultater skal vises inden for få sekunder.
+* Brugeroplysninger skal opbevares sikkert.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

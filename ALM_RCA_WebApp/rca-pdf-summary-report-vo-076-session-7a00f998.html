@@ -1,0 +1,582 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RCA Summary Report – VO-076</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1f2328;
+    background: #f7f8fa;
+  }
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 48px 48px;
+  }
+
+  /* ── Header ── */
+  .report-header {
+    border-bottom: 2px solid #3b82d4;
+    padding-bottom: 18px;
+    margin-bottom: 28px;
+  }
+  .report-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2328;
+    letter-spacing: -0.3px;
+  }
+  .report-header .sub {
+    font-size: 12px;
+    color: #57606a;
+    margin-top: 4px;
+  }
+  .report-header .meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #57606a;
+  }
+  .report-header .meta span strong { color: #1f2328; }
+
+  /* ── Print button ── */
+  .print-btn {
+    float: right;
+    margin-top: -4px;
+    background: #3b82d4;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* ── Section titles ── */
+  h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1f2328;
+    margin: 28px 0 12px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1f2328;
+    margin: 16px 0 6px;
+  }
+
+  /* ── Summary cards ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .card {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .card .val {
+    font-size: 26px;
+    font-weight: 700;
+    color: #3b82d4;
+    line-height: 1.2;
+  }
+  .card.red .val { color: #dc2626; }
+  .card.green .val { color: #16a34a; }
+  .card.amber .val { color: #d97706; }
+  .card .lbl {
+    font-size: 11px;
+    color: #57606a;
+    margin-top: 3px;
+  }
+
+  /* ── Tables ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  th {
+    background: #f7f8fa;
+    text-align: left;
+    font-weight: 600;
+    padding: 8px 10px;
+    border: 1px solid #e5e7eb;
+    color: #1f2328;
+    font-size: 12px;
+  }
+  td {
+    padding: 7px 10px;
+    border: 1px solid #e5e7eb;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #fafafa; }
+
+  /* severity badges */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-crit { background: #fee2e2; color: #991b1b; }
+  .badge-high { background: #fef3c7; color: #92400e; }
+
+  /* group size pill */
+  .pill {
+    display: inline-block;
+    min-width: 22px;
+    text-align: center;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #dbeafe;
+    color: #1d4ed8;
+  }
+  .pill-1 { background: #f3f4f6; color: #6b7280; }
+
+  /* ── Module bar chart ── */
+  .bar-wrap { margin-top: 10px; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+  .bar-label { width: 90px; text-align: right; color: #57606a; flex-shrink: 0; }
+  .bar-track {
+    flex: 1;
+    background: #f3f4f6;
+    border-radius: 3px;
+    height: 14px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: #3b82d4;
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+  .bar-fill.sec { background: #7c5cd8; }
+  .bar-count { width: 22px; font-weight: 600; color: #1f2328; flex-shrink: 0; font-size: 12px; }
+
+  /* ── Pattern cards ── */
+  .pattern-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .pattern-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 14px;
+    background: #fafafa;
+  }
+  .pattern-card .ptitle {
+    font-weight: 700;
+    font-size: 13px;
+    color: #1f2328;
+    margin-bottom: 6px;
+  }
+  .pattern-card .pcount {
+    font-size: 11px;
+    color: #57606a;
+    margin-bottom: 8px;
+  }
+  .pattern-card ul {
+    padding-left: 16px;
+    font-size: 12px;
+    color: #1f2328;
+  }
+  .pattern-card ul li { margin-bottom: 2px; }
+
+  /* ── 5 Whys ── */
+  .whys-block {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-top: 10px;
+  }
+  .whys-block .category-title {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: #1f2328;
+  }
+  .why-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    align-items: flex-start;
+  }
+  .why-q {
+    min-width: 160px;
+    font-weight: 600;
+    color: #3b82d4;
+    flex-shrink: 0;
+  }
+  .why-a { color: #1f2328; }
+  .root-cause-row {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    margin-top: 6px;
+    padding-top: 8px;
+    border-top: 1px dashed #e5e7eb;
+    align-items: flex-start;
+  }
+  .root-cause-row .rc-label {
+    min-width: 160px;
+    font-weight: 700;
+    color: #dc2626;
+    flex-shrink: 0;
+  }
+  .root-cause-row .rc-val { color: #1f2328; font-weight: 600; }
+
+  /* ── Recommendations ── */
+  .rec-list { padding-left: 18px; font-size: 13px; }
+  .rec-list li { margin-bottom: 4px; }
+
+  /* ── Standalone defect list ── */
+  .standalone-list {
+    columns: 2;
+    column-gap: 16px;
+    font-size: 12px;
+    padding-left: 16px;
+    color: #1f2328;
+    margin-top: 8px;
+  }
+  .standalone-list li { margin-bottom: 3px; break-inside: avoid; }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 40px;
+    padding-top: 14px;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+    font-size: 11px;
+    color: #57606a;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .page { padding: 20px 24px; }
+    .print-btn { display: none; }
+    h2 { page-break-after: avoid; }
+    .whys-block, .pattern-card { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  
+  <div class="report-header">
+    <button class="print-btn">Print / Save PDF</button>
+    <h1>Root Cause Analysis – Summary Report</h1>
+    <div class="sub">ALM RCA Web Application  |  Session: 7a00f998-cd3d-47a9-93bd-16a341f15322</div>
+    <div class="meta">
+      <span><strong>Generated:</strong> 2026-06-29 14:25:34</span>
+      <span><strong>Project:</strong> VO-076</span>
+      <span><strong>Status:</strong> All Closed</span>
+    </div>
+  </div>
+
+  
+  <h2>Executive Summary</h2>
+  <div class="cards">
+    <div class="card">
+      <div class="val">32</div>
+      <div class="lbl">Total Defects</div>
+    </div>
+    <div class="card green">
+      <div class="val">32</div>
+      <div class="lbl">Closed</div>
+    </div>
+    <div class="card">
+      <div class="val">0</div>
+      <div class="lbl">Open</div>
+    </div>
+    <div class="card red">
+      <div class="val">1</div>
+      <div class="lbl">Critical Severity</div>
+    </div>
+  </div>
+
+  
+  <h2>Severity Distribution</h2>
+  <table>
+    <thead>
+      <tr><th>Severity</th><th>Count</th><th>Percentage</th><th>Visual</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-high">3 – Betydende fejl</span></td>
+        <td>31</td>
+        <td>96.9%</td>
+        <td>
+          <div class="bar-track" style="height:10px">
+            <div class="bar-fill" style="width:96.9%;background:#d97706"></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-crit">1 – Kritisk fejl</span></td>
+        <td>1</td>
+        <td>3.1%</td>
+        <td>
+          <div class="bar-track" style="height:10px">
+            <div class="bar-fill" style="width:3.1%;background:#dc2626"></div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <h2>Module Distribution</h2>
+  <div class="bar-wrap">
+    <div class="bar-row"><span class="bar-label">File</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-count">8</span></div>
+    <div class="bar-row"><span class="bar-label">Server</span><div class="bar-track"><div class="bar-fill" style="width:50%"></div></div><span class="bar-count">4</span></div>
+    <div class="bar-row"><span class="bar-label">User</span><div class="bar-track"><div class="bar-fill" style="width:37.5%"></div></div><span class="bar-count">3</span></div>
+    <div class="bar-row"><span class="bar-label">Message</span><div class="bar-track"><div class="bar-fill sec" style="width:12.5%"></div></div><span class="bar-count">1</span></div>
+    <div class="bar-row"><span class="bar-label">Database</span><div class="bar-track"><div class="bar-fill sec" style="width:12.5%"></div></div><span class="bar-count">1</span></div>
+    <div class="bar-row"><span class="bar-label">Password</span><div class="bar-track"><div class="bar-fill sec" style="width:12.5%"></div></div><span class="bar-count">1</span></div>
+    <div class="bar-row"><span class="bar-label">Order</span><div class="bar-track"><div class="bar-fill sec" style="width:12.5%"></div></div><span class="bar-count">1</span></div>
+    <div class="bar-row"><span class="bar-label">Admin</span><div class="bar-track"><div class="bar-fill sec" style="width:12.5%"></div></div><span class="bar-count">1</span></div>
+    <div class="bar-row"><span class="bar-label">UI</span><div class="bar-track"><div class="bar-fill sec" style="width:12.5%"></div></div><span class="bar-count">1</span></div>
+  </div>
+
+  
+  <h2>Defect Grouping &amp; Clustering</h2>
+  <p style="font-size:12px;color:#57606a;margin-bottom:10px">
+    32 defects were clustered into <strong>4 groups</strong> (15 defects) and <strong>17 standalone</strong> defects based on keyword similarity.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Group</th>
+        <th>Lead Defect ID</th>
+        <th>Size</th>
+        <th>Severity</th>
+        <th>Similar Defect IDs</th>
+        <th>Summary (Lead)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Error Handling</strong><br /><span style="font-size:11px;color:#57606a">General_error</span></td>
+        <td>52767</td>
+        <td><span class="pill">7</span></td>
+        <td><span class="badge badge-high">3 – Betydende</span></td>
+        <td style="font-size:11px">52861, 52903, 52907, 53158, 53169, 53178</td>
+        <td style="font-size:12px">Incorrect error message while updating Beskrivelse / Alias exceeding char limits</td>
+      </tr>
+      <tr>
+        <td><strong>Display / Rendering</strong><br /><span style="font-size:11px;color:#57606a">General_display</span></td>
+        <td>52798</td>
+        <td><span class="pill">4</span></td>
+        <td><span class="badge badge-high">3 – Betydende</span></td>
+        <td style="font-size:11px">52871, 53135, 53136</td>
+        <td style="font-size:12px">Danish characters not displayed correctly in Job name field after navigation</td>
+      </tr>
+      <tr>
+        <td><strong>Role / Update</strong><br /><span style="font-size:11px;color:#57606a">General_update</span></td>
+        <td>52775</td>
+        <td><span class="pill">2</span></td>
+        <td><span class="badge badge-high">3 – Betydende</span></td>
+        <td style="font-size:11px">52777</td>
+        <td style="font-size:12px">Non-Admin user (IBMTester) unable to update sequence despite CHANGESEQUENCE=Y</td>
+      </tr>
+      <tr>
+        <td><strong>File Upload</strong><br /><span style="font-size:11px;color:#57606a">General_uploaded</span></td>
+        <td>52870</td>
+        <td><span class="pill">2</span></td>
+        <td><span class="badge badge-high">3 – Betydende</span></td>
+        <td style="font-size:11px">53151</td>
+        <td style="font-size:12px">Uploaded input file content is blank; job completes with blank logs</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:20px">Standalone Defects (17)</h3>
+  <p style="font-size:12px;color:#57606a;margin-bottom:6px">Each of these defects has no close keyword-match sibling in the dataset.</p>
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Severity</th><th>Summary</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>52792</td><td><span class="badge badge-crit">1 – Kritisk</span></td><td style="font-size:12px">Special characters not allowed in Beskrivelse field on Jobdetaljer screen</td></tr>
+      <tr><td>52762</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Not able to run scheduled sequence from Kørselsforløb screen</td></tr>
+      <tr><td>52768</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Jobs missing on Kørsler screen despite being present in database</td></tr>
+      <tr><td>52770</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Alias for sequence is accepting special characters</td></tr>
+      <tr><td>52772</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Sensitive data 'password' displayed in job logs</td></tr>
+      <tr><td>52780</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Able to run sequence with incorrect job order (Rækkefølge 1&amp;3)</td></tr>
+      <tr><td>52817</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Text overlapping in Job List on ebpadmin – Kørsler screen</td></tr>
+      <tr><td>52862</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Job is not running at scheduled time</td></tr>
+      <tr><td>52873</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Able to upload file having incorrect MIME type (JPEG renamed to xlsx)</td></tr>
+      <tr><td>52902</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Cancellation flow 'Aflys planlagt kørsel' not working</td></tr>
+      <tr><td>52908</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">'Deaktiver planlagt kørsel' flow is not working</td></tr>
+      <tr><td>52936</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Server field is blank for jobs running at scheduled time</td></tr>
+      <tr><td>53014</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Not able to delete all planned schedules together for job and sequence</td></tr>
+      <tr><td>53111</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Stop/Start Server button available for non-IBMAdmin profiles</td></tr>
+      <tr><td>53140</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Failure sending stop signal – jobs not traceable on server screen</td></tr>
+      <tr><td>53153</td><td><span class="badge badge-high">3 – Bedeutende</span></td><td style="font-size:12px">K515 Input/Output files not visible on UI</td></tr>
+      <tr><td>53159</td><td><span class="badge badge-high">3 – Betydende</span></td><td style="font-size:12px">Kategory for Input/Output files incorrect on Søgning efter fil screen</td></tr>
+    </tbody>
+  </table>
+
+  
+  <h2>Patterns Detected</h2>
+  <div class="pattern-grid">
+    <div class="pattern-card">
+      <div class="ptitle">Error Handling Pattern</div>
+      <div class="pcount">7 defects  |  Largest cluster</div>
+      <ul>
+        <li>Incorrect / misleading error messages shown to users</li>
+        <li>Validation errors triggered at wrong thresholds</li>
+        <li>No standardised exception messages across screens</li>
+        <li>Errors not distinguishing field-level from system-level issues</li>
+      </ul>
+    </div>
+    <div class="pattern-card">
+      <div class="ptitle">Display &amp; Character Encoding Pattern</div>
+      <div class="pcount">4 defects  |  2nd largest cluster</div>
+      <ul>
+        <li>Danish / special characters rendered incorrectly</li>
+        <li>UTF-8 encoding breaks after screen navigation</li>
+        <li>Text overflow / overlapping in list views</li>
+        <li>No cross-browser / locale regression tests in place</li>
+      </ul>
+    </div>
+    <div class="pattern-card">
+      <div class="ptitle">Scheduling / Workflow Pattern</div>
+      <div class="pcount">5 standalone defects</div>
+      <ul>
+        <li>Jobs not triggering at scheduled times</li>
+        <li>Cancel &amp; Deactivate planned run flows broken</li>
+        <li>Bulk-delete of planned schedules not working</li>
+        <li>Server field blank for scheduled executions</li>
+      </ul>
+    </div>
+    <div class="pattern-card">
+      <div class="ptitle">Access Control &amp; Security Pattern</div>
+      <div class="pcount">3 standalone defects</div>
+      <ul>
+        <li>Non-Admin role bypass for sequence updates</li>
+        <li>Stop/Start Server exposed to non-IBMAdmin profiles</li>
+        <li>Sensitive 'password' data visible in job logs</li>
+      </ul>
+    </div>
+    <div class="pattern-card">
+      <div class="ptitle">File Handling &amp; Validation Pattern</div>
+      <div class="pcount">4 defects (1 group + 2 standalone)</div>
+      <ul>
+        <li>Blank content after file upload; job runs silently</li>
+        <li>MIME type not validated (JPEG accepted as XLSX)</li>
+        <li>Input/Output files missing from UI</li>
+        <li>Incorrect file category metadata on search screen</li>
+      </ul>
+    </div>
+    <div class="pattern-card">
+      <div class="ptitle">Input Validation Pattern</div>
+      <div class="pcount">3 standalone defects</div>
+      <ul>
+        <li>Special characters accepted in Alias field</li>
+        <li>Special characters blocked in Beskrivelse (1-Kritisk)</li>
+        <li>Incorrect job order (Rækkefølge) accepted by system</li>
+      </ul>
+    </div>
+  </div>
+
+  
+  <h2>5-Whys Root Cause Analysis</h2>
+
+  <div class="whys-block">
+    <div class="category-title">Pattern 1 — Error Handling  <span style="font-weight:400;color:#57606a;font-size:12px">(7 defects affected)</span></div>
+    <div class="why-row"><span class="why-q">Why 1: Why errors occur?</span><span class="why-a">Errors not properly caught and handled in application layer</span></div>
+    <div class="why-row"><span class="why-q">Why 2: Why not handled?</span><span class="why-a">No standardised error handling framework across modules</span></div>
+    <div class="why-row"><span class="why-q">Why 3: Why no framework?</span><span class="why-a">Error handling patterns were never formally established</span></div>
+    <div class="why-row"><span class="why-q">Why 4: Why not established?</span><span class="why-a">Error handling requirements were not documented in design phase</span></div>
+    <div class="why-row"><span class="why-q">Why 5: Why not documented?</span><span class="why-a">Architecture review did not include exception management strategy</span></div>
+    <div class="root-cause-row"><span class="rc-label">Root Cause:</span><span class="rc-val">Lack of error handling architecture and exception management strategy</span></div>
+  </div>
+
+  <div class="whys-block" style="margin-top:12px">
+    <div class="category-title">Pattern 2 — Display &amp; Rendering  <span style="font-weight:400;color:#57606a;font-size:12px">(4 defects affected)</span></div>
+    <div class="why-row"><span class="why-q">Why 1: Why display issues?</span><span class="why-a">UI rendering incorrectly across navigation and different locales</span></div>
+    <div class="why-row"><span class="why-q">Why 2: Why incorrect?</span><span class="why-a">CSS and layout not tested across browsers/devices/locales</span></div>
+    <div class="why-row"><span class="why-q">Why 3: Why not tested?</span><span class="why-a">No cross-browser / locale testing strategy defined</span></div>
+    <div class="why-row"><span class="why-q">Why 4: Why no strategy?</span><span class="why-a">UI/UX requirements did not comprehensively cover locale scenarios</span></div>
+    <div class="why-row"><span class="why-q">Why 5: Why gaps in requirements?</span><span class="why-a">Responsive design and encoding guidelines were never formalised</span></div>
+    <div class="root-cause-row"><span class="rc-label">Root Cause:</span><span class="rc-val">Lack of responsive design guidelines and visual regression / locale testing</span></div>
+  </div>
+
+  
+  <h2>Preventive Measures</h2>
+
+  <h3>Immediate Actions (Next Sprint)</h3>
+  <ol class="rec-list">
+    <li>Implement comprehensive error handling framework with standardised user-facing messages</li>
+    <li>Add user-friendly, field-level error messages across all screens</li>
+    <li>Implement error logging and monitoring (centralised log aggregation)</li>
+    <li>Implement visual regression testing and cross-browser compatibility checks</li>
+    <li>Review CSS and layout implementations for locale/character encoding correctness</li>
+    <li>Fix role-based access control gaps (sequence update, server controls)</li>
+    <li>Mask sensitive data (passwords) in job logs immediately</li>
+    <li>Add MIME-type and file-content validation on upload</li>
+  </ol>
+
+  <h3 style="margin-top:16px">Long-term Prevention (3–6 Months)</h3>
+  <ol class="rec-list">
+    <li>Establish comprehensive automated test framework covering critical paths and regression</li>
+    <li>Implement continuous integration with automated lint, unit, and integration tests</li>
+    <li>Conduct mandatory code reviews with focus on error handling and security</li>
+    <li>Define and enforce responsive design and internationalisation (i18n) standards</li>
+    <li>Implement continuous monitoring and alerting for production anomalies</li>
+    <li>Provide team training on best practices for error handling and access control</li>
+    <li>Document lessons learned and update coding standards after each release</li>
+    <li>Establish design review checkpoints and quality gates before each release</li>
+  </ol>
+
+  
+  <h2>General Best Practices</h2>
+  <ol class="rec-list">
+    <li>Conduct regular code reviews focusing on identified problem areas</li>
+    <li>Implement automated testing for high-defect modules (File, Server, User)</li>
+    <li>Establish coding standards and best-practices documentation</li>
+    <li>Conduct knowledge-sharing sessions on common defect patterns</li>
+    <li>Implement continuous integration with automated testing pipeline</li>
+  </ol>
+
+  <div class="footer">
+    <p>Report generated by the ALM RCA Web Application  ·  Session 7a00f998-cd3d-47a9-93bd-16a341f15322  ·  2026-06-29</p>
+    <p style="margin-top:4px">Made with IBM Bob</p>
+  </div>
+
+</div>
+</body>
+</html>
