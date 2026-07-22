@@ -7,7 +7,7 @@
 ## Table of Contents
 
 1. [What Is This App?](#1-what-is-this-app)
-2. [How Does It Work? — Plain English](#2-how-does-it-work--plain-english)
+2. [How Does It Work?](#2-how-does-it-work--plain-english)
 3. [Architecture Overview](#3-architecture-overview)
 4. [Prerequisites](#4-prerequisites)
 5. [Installation](#5-installation)
@@ -40,7 +40,7 @@ You do **not** need to be a data scientist or AI expert to use it. You just need
 
 ---
 
-## 2. How Does It Work? — Plain English
+## 2. How Does It Work?
 
 The app runs a small local web server on your computer. You open it in any browser, just like a website — but everything stays on your machine (except when calling out to IBM cloud services). Here is the DEMO Video link: https://ibm.box.com/s/mt4i5fodv4ksa5dqtmfw3emx15j9oti7
 
