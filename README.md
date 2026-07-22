@@ -42,7 +42,7 @@ You do **not** need to be a data scientist or AI expert to use it. You just need
 
 ## 2. How Does It Work? — Plain English
 
-The app runs a small local web server on your computer. You open it in any browser, just like a website — but everything stays on your machine (except when calling out to IBM cloud services).
+The app runs a small local web server on your computer. You open it in any browser, just like a website — but everything stays on your machine (except when calling out to IBM cloud services). Here is the DEMO Video link: https://ibm.box.com/s/mt4i5fodv4ksa5dqtmfw3emx15j9oti7
 
 ```
 Your Browser
