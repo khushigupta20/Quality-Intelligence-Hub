@@ -7,7 +7,7 @@
 ## Table of Contents
 
 1. [What Is This App?](#1-what-is-this-app)
-2. [How Does It Work? — Plain English](#2-how-does-it-work--plain-english)
+2. [How Does It Work?](#2-how-does-it-work--plain-english)
 3. [Architecture Overview](#3-architecture-overview)
 4. [Prerequisites](#4-prerequisites)
 5. [Installation](#5-installation)
